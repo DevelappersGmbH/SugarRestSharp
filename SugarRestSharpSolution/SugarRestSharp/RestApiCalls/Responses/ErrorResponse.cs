@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using RestSharp.Portable;
+
 namespace SugarRestSharp.Responses
 {
     using System;
@@ -49,17 +51,10 @@ namespace SugarRestSharp.Responses
             var errorResponse = new ErrorResponse();
             errorResponse.Name = string.IsNullOrEmpty(response.StatusDescription) ? "Internal server error." : response.StatusDescription;
             errorResponse.Number = (int)response.StatusCode;
-            string message = response.ErrorMessage;
+            string message = response.StatusDescription;
             if (string.IsNullOrEmpty(message))
             {
-                if (response.ErrorException != null)
-                {
-                    message = response.ErrorException.Message;
-                }
-                else
-                {
-                    message = errorResponse.Name;
-                }
+                message = errorResponse.Name;
             }
 
             errorResponse.Message = message;

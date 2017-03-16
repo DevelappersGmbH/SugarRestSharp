@@ -4,6 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System;
@@ -28,7 +32,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="identifier">The entity identifier</param>
         /// <param name="selectFields">Selected field list</param>
         /// <returns>ReadEntryResponse object</returns>
-        public static ReadEntryResponse Run(string sessionId, string url, string moduleName, string identifier, List<string> selectFields)
+        public static async Task<ReadEntryResponse> Run(string sessionId, string url, string moduleName, string identifier, List<string> selectFields)
         {
             var readEntryResponse = new ReadEntryResponse();
             var content = string.Empty;
@@ -54,7 +58,7 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("response_type", "json");
                 request.AddParameter("rest_data", jsonData);
 
-                var sugarApiRestResponse = client.ExecuteEx(request);
+                var sugarApiRestResponse = await client.ExecuteEx(request);
                 var response = sugarApiRestResponse.RestResponse;
 
                 if (response.StatusCode == HttpStatusCode.OK)

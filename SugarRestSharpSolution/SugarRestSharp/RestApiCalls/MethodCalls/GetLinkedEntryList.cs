@@ -4,6 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System;
@@ -30,7 +34,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="queryString">Formatted query string.</param>
         /// <param name="maxCountResult">Maximum number of entries to return</param>
         /// <returns>ReadLinkedEntryListResponse object</returns>
-        public static ReadLinkedEntryListResponse Run(string sessionId, string url, string moduleName, List<string> selectFields, Dictionary<string, List<string>> linkedSelectFields, string queryString, int maxCountResult)
+        public static async Task<ReadLinkedEntryListResponse> Run(string sessionId, string url, string moduleName, List<string> selectFields, Dictionary<string, List<string>> linkedSelectFields, string queryString, int maxCountResult)
         {
             var readLinkedEntryListResponse = new ReadLinkedEntryListResponse();
             var content = string.Empty;
@@ -61,7 +65,7 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("response_type", "json");
                 request.AddParameter("rest_data", jsonData);
 
-                var sugarApiRestResponse = client.ExecuteEx(request);
+                var sugarApiRestResponse = await client.ExecuteEx(request);
                 var response = sugarApiRestResponse.RestResponse;
 
                 if (response.StatusCode == HttpStatusCode.OK)

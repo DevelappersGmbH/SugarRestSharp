@@ -4,6 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System;
@@ -30,7 +34,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="entities">The entity objects collection to create</param>
         /// <param name="selectFields">Selected field list</param>
         /// <returns>InsertEntriesResponse object</returns>
-        public static InsertEntriesResponse Run(string sessionId, string url, string moduleName, JArray entities, List<string> selectFields)
+        public static async Task<InsertEntriesResponse> Run(string sessionId, string url, string moduleName, JArray entities, List<string> selectFields)
         {
             var insertEntriesResponse = new InsertEntriesResponse();
             var content = string.Empty;
@@ -53,7 +57,7 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("response_type", "json");
                 request.AddParameter("rest_data", jsonData);
 
-                var sugarApiRestResponse = client.ExecuteEx(request);
+                var sugarApiRestResponse = await client.ExecuteEx(request);
                 var response = sugarApiRestResponse.RestResponse;
 
                 if (response.StatusCode == HttpStatusCode.OK)

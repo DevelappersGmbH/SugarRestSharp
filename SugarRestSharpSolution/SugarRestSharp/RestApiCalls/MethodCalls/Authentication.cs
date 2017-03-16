@@ -4,6 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System.Collections.Generic;
@@ -13,7 +17,6 @@ namespace SugarRestSharp.MethodCalls
     using Newtonsoft.Json.Linq;
     using Requests;
     using Responses;
-    using RestSharp;
 
     /// <summary>
     /// Base Authentication class for SugarCrm REST API calls
@@ -25,7 +28,7 @@ namespace SugarRestSharp.MethodCalls
         /// </summary>
         /// <param name="loginRequest">LoginRequest object</param>
         /// <returns>LoginResponse object</returns>
-        public static LoginResponse Login(LoginRequest loginRequest)
+        public async  static Task<LoginResponse> Login(LoginRequest loginRequest)
         {
             var loginResponse = new LoginResponse();
             
@@ -46,9 +49,9 @@ namespace SugarRestSharp.MethodCalls
             request.AddParameter("method", "login");
             request.AddParameter("input_type", "json");
             request.AddParameter("response_type", "json");
-            request.AddParameter("rest_data", JsonConvert.SerializeObject(authData));
+            request.AddParameter("rest_data", (string)JsonConvert.SerializeObject(authData));
 
-            var response = client.Execute(request);
+            var response = await client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 string content = response.Content;
@@ -89,7 +92,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="url">REST API Url</param>
         /// <param name="sessionId">Session identifier</param>
         /// <returns>LoginResponse object</returns>
-        public static LoginResponse GetCurrentSession(string url, string sessionId)
+        public async static Task<LoginResponse> GetCurrentSession(string url, string sessionId)
         {
             var sessionResponse = new LoginResponse();
 
@@ -105,9 +108,9 @@ namespace SugarRestSharp.MethodCalls
             request.AddParameter("method", "oauth_access");
             request.AddParameter("input_type", "json");
             request.AddParameter("response_type", "json");
-            request.AddParameter("rest_data", JsonConvert.SerializeObject(currentSession));
+            request.AddParameter("rest_data", (string)JsonConvert.SerializeObject(currentSession));
 
-            var response = client.Execute(request);
+            var response = await client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 string content = response.Content;
@@ -147,7 +150,7 @@ namespace SugarRestSharp.MethodCalls
         /// </summary>
         /// <param name="url">REST API Url</param>
         /// <param name="sessionId">Session identifier</param>
-        public static void Logout(string url, string sessionId)
+        public static async void Logout(string url, string sessionId)
         {
             try
             {
@@ -163,9 +166,9 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("method", "logout");
                 request.AddParameter("input_type", "json");
                 request.AddParameter("response_type", "json");
-                request.AddParameter("rest_data", JsonConvert.SerializeObject(currentSession));
+                request.AddParameter("rest_data",(string) JsonConvert.SerializeObject(currentSession));
 
-                client.Execute(request);
+                await client.Execute(request);
             }
             catch 
             {

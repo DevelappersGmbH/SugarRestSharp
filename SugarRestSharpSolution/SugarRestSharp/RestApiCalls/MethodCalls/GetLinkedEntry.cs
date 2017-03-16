@@ -4,6 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System;
@@ -29,7 +33,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="selectFields">Selected field list</param>
         /// <param name="linkedSelectFields">Linked field info.</param>
         /// <returns>ReadLinkedEntryResponse object</returns>
-        public static ReadLinkedEntryResponse Run(string sessionId, string url, string moduleName, string identifier, List<string> selectFields, Dictionary<string, List<string>> linkedSelectFields)
+        public static async Task<ReadLinkedEntryResponse> Run(string sessionId, string url, string moduleName, string identifier, List<string> selectFields, Dictionary<string, List<string>> linkedSelectFields)
         {
             var readLinkedEntryResponse = new ReadLinkedEntryResponse();
             var content = string.Empty;
@@ -55,7 +59,7 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("response_type", "json");
                 request.AddParameter("rest_data", jsonData);
 
-                var sugarApiRestResponse = client.ExecuteEx(request);
+                var sugarApiRestResponse = await client.ExecuteEx(request);
                 var response = sugarApiRestResponse.RestResponse;
 
                 if (response.StatusCode == HttpStatusCode.OK)

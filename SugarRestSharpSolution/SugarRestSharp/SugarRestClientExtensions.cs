@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+
 namespace SugarRestSharp
 {
     using System;
@@ -27,7 +29,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteGetById(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteGetById(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -41,11 +43,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 var selectFields = request.Options == null ? new List<string>() : request.Options.SelectFields;
                 selectFields = modelInfo.GetJsonPropertyNames(selectFields);
-                var readEntryResponse = GetEntry.Run(loginResponse.SessionId, request.Url, request.ModuleName, request.Parameter.ToString(), selectFields);
+                var readEntryResponse = await GetEntry.Run(loginResponse.SessionId, request.Url, request.ModuleName, request.Parameter.ToString(), selectFields);
 
                 if (readEntryResponse != null)
                 {
@@ -88,7 +90,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteLinkedGetById(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteLinkedGetById(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -102,13 +104,13 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 var selectFields = request.Options == null ? new List<string>() : request.Options.SelectFields;
                 var linkedFields = request.Options == null ? null : request.Options.LinkedModules;
                 selectFields = modelInfo.GetJsonPropertyNames(selectFields);
                 Dictionary<string, List<string>> linkedSelectFields = modelInfo.GetJsonLinkedInfo(linkedFields);
-                var readEntryResponse = GetLinkedEntry.Run(loginResponse.SessionId, request.Url, request.ModuleName, request.Parameter.ToString(), selectFields, linkedSelectFields);
+                var readEntryResponse = await GetLinkedEntry.Run(loginResponse.SessionId, request.Url, request.ModuleName, request.Parameter.ToString(), selectFields, linkedSelectFields);
 
                 if (readEntryResponse != null)
                 {
@@ -151,7 +153,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteGetAll(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteGetAll(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -165,11 +167,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
                 var selectFields = modelInfo.GetJsonPropertyNames(request.Options.SelectFields);
                 string query = modelInfo.GetQuery(request.Options.QueryPredicates, request.Options.Query);
 
-                var readEntryListResponse = GetEntryList.Run(loginResponse.SessionId, request.Url, request.ModuleName, selectFields, query, request.Options.MaxResult);
+                var readEntryListResponse = await GetEntryList.Run(loginResponse.SessionId, request.Url, request.ModuleName, selectFields, query, request.Options.MaxResult);
 
                 if (readEntryListResponse != null)
                 {
@@ -212,7 +214,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteLinkedGetAll(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteLinkedGetAll(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -226,7 +228,7 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 var selectFields = request.Options == null ? new List<string>() : request.Options.SelectFields;
                 var linkedFields = request.Options == null ? null : request.Options.LinkedModules;
@@ -234,7 +236,7 @@ namespace SugarRestSharp
                 Dictionary<string, List<string>> linkedSelectFields = modelInfo.GetJsonLinkedInfo(linkedFields);
                 string query = modelInfo.GetQuery(request.Options.QueryPredicates, request.Options.Query);
 
-                var readLinkedEntryListResponse = GetLinkedEntryList.Run(loginResponse.SessionId, request.Url, request.ModuleName, selectFields, linkedSelectFields, query, request.Options.MaxResult);
+                var readLinkedEntryListResponse = await GetLinkedEntryList.Run(loginResponse.SessionId, request.Url, request.ModuleName, selectFields, linkedSelectFields, query, request.Options.MaxResult);
 
                 if (readLinkedEntryListResponse != null)
                 {
@@ -277,7 +279,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteGetPaged(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteGetPaged(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -290,11 +292,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
                 var selectFields = modelInfo.GetJsonPropertyNames(request.Options.SelectFields);
                 string query = modelInfo.GetQuery(request.Options.QueryPredicates, request.Options.Query);
 
-                var readEntryListResponse = GetPagedEntryList.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, selectFields, query, request.Options.CurrentPage, request.Options.NumberPerPage);
+                var readEntryListResponse = await GetPagedEntryList.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, selectFields, query, request.Options.CurrentPage, request.Options.NumberPerPage);
 
                 if (readEntryListResponse != null)
                 {
@@ -337,7 +339,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteInsert(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteInsert(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -351,11 +353,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 JObject jobject = JsonConverterHelper.Serialize(request.Parameter, modelInfo.Type);
                 var selectFields = modelInfo.GetJsonPropertyNames(request.Options.SelectFields);
-                var insertEntryResponse = InsertEntry.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, jobject, selectFields);
+                var insertEntryResponse = await InsertEntry.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, jobject, selectFields);
 
                 if (insertEntryResponse != null)
                 {
@@ -397,7 +399,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteInserts(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteInserts(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -411,11 +413,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 JArray objectList = JsonConverterHelper.SerializeList(request.Parameter, modelInfo.Type);
                 var selectFields = modelInfo.GetJsonPropertyNames(request.Options.SelectFields);
-                var insertEntriesResponse = InsertEntries.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, objectList, selectFields);
+                var insertEntriesResponse = await InsertEntries.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, objectList, selectFields);
 
                 if (insertEntriesResponse != null)
                 {
@@ -457,7 +459,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteUpdate(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo) 
+        public static async Task<SugarRestResponse> ExecuteUpdate(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo) 
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -471,11 +473,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 JObject jobject = JsonConverterHelper.Serialize(request.Parameter, modelInfo.Type);
                 var selectFields = modelInfo.GetJsonPropertyNames(request.Options.SelectFields);
-                var updateEntryResponse = UpdateEntry.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, jobject, selectFields);
+                var updateEntryResponse = await UpdateEntry.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, jobject, selectFields);
 
                 if (updateEntryResponse != null)
                 {
@@ -517,7 +519,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteUpdates(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
+        public static async Task<SugarRestResponse> ExecuteUpdates(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo)
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -531,11 +533,11 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
                 JArray objectList = JsonConverterHelper.SerializeList(request.Parameter, modelInfo.Type);
                 var selectFields = modelInfo.GetJsonPropertyNames(request.Options.SelectFields);
-                var updateEntriesResponse = UpdateEntries.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, objectList, selectFields);
+                var updateEntriesResponse = await UpdateEntries.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, objectList, selectFields);
 
                 if (updateEntriesResponse != null)
                 {
@@ -577,7 +579,7 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The entity model info.</param>
         /// <returns>SugarRestResponse object.</returns>
-        public static SugarRestResponse ExecuteDelete(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo) 
+        public static async Task<SugarRestResponse> ExecuteDelete(this SugarRestClient client, SugarRestRequest request, ModelInfo modelInfo) 
         {
             var sugarRestResponse = new SugarRestResponse();
             var loginResponse = new LoginResponse();
@@ -591,9 +593,9 @@ namespace SugarRestSharp
                     Password = request.Password
                 };
 
-                loginResponse = Authentication.Login(loginRequest);
+                loginResponse = await Authentication.Login(loginRequest);
 
-                var deleteEntryResponse = DeleteEntry.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, request.Parameter.ToString());
+                var deleteEntryResponse = await DeleteEntry.Run(loginResponse.SessionId, loginRequest.Url, request.ModuleName, request.Parameter.ToString());
 
                 if (deleteEntryResponse != null)
                 {

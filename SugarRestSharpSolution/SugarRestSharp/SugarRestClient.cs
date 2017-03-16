@@ -50,29 +50,12 @@ namespace SugarRestSharp
         }
 
         /// <summary>
-        /// Execute client.
-        /// </summary>
-        /// <param name="request">The request object.</param>
-        /// <returns>SugarRestResponse object.</returns>
-        public SugarRestResponse Execute(SugarRestRequest request)
-        {
-            SugarRestResponse response = new SugarRestResponse();
-            if (!this.IsRequestValidate(ref request,  ref response))
-            {
-                return response;
-            }
-
-            ModelInfo modelInfo = ModelInfo.ReadByName(request.ModuleName);
-            return this.InternalExceute(request, modelInfo);
-        }
-
-        /// <summary>
         /// Execute client based on entity type.
         /// </summary>
         /// <param name="request">The request object</param>
         /// <typeparam name="TEntity">Entity type of EntityBase type</typeparam>
         /// <returns>SugarRestResponse object.</returns>
-        public SugarRestResponse Execute<TEntity>(SugarRestRequest request) where TEntity : EntityBase 
+        public async Task<SugarRestResponse> Execute<TEntity>(SugarRestRequest request) where TEntity : EntityBase 
         {
             ModelInfo modelInfo = ModelInfo.ReadByType(typeof(TEntity));
             request.ModuleName = modelInfo.ModelName;
@@ -83,26 +66,8 @@ namespace SugarRestSharp
                 return response;
             }
 
-            return this.InternalExceute(request, modelInfo);
+            return await this.InternalExceute(request, modelInfo);
         }
-
-        /// <summary>
-        /// Execute request asynchronously using SugarCrm module name.
-        /// </summary>
-        /// <param name="request">The request object.</param>
-        /// <returns>SugarRestResponse object.</returns>
-        public async Task<SugarRestResponse> ExecuteAsync(SugarRestRequest request)
-        {
-            SugarRestResponse response = new SugarRestResponse();
-            if (!this.IsRequestValidate(ref request, ref response))
-            {
-                return response;
-            }
-
-            ModelInfo modelInfo = ModelInfo.ReadByName(request.ModuleName);
-            return await Task.Run(() => { return this.InternalExceute(request, modelInfo); });
-        }
-
 
         /// <summary>
         /// Execute request asynchronously using the C# SugarCrm model type.
@@ -121,7 +86,7 @@ namespace SugarRestSharp
                 return response;
             }
           
-            return await Task.Run(() => { return this.InternalExceute(request, modelInfo); });
+            return await this.InternalExceute(request, modelInfo);
         }
 
         /// <summary>
@@ -130,58 +95,58 @@ namespace SugarRestSharp
         /// <param name="request">The request object.</param>
         /// <param name="modelInfo">The model info for the referenced SugarCrm module.</param>
         /// <returns>SugarRestResponse object.</returns>
-        private SugarRestResponse InternalExceute(SugarRestRequest request, ModelInfo modelInfo)
+        private async Task<SugarRestResponse> InternalExceute(SugarRestRequest request, ModelInfo modelInfo)
         {
             switch (request.RequestType)
             {
                 case RequestType.ReadById:
                 {
-                    return this.ExecuteGetById(request, modelInfo);
+                    return await this.ExecuteGetById(request, modelInfo);
                 }
 
                 case RequestType.BulkRead:
                 {
-                    return this.ExecuteGetAll(request, modelInfo);
+                    return await this.ExecuteGetAll(request, modelInfo);
                 }
 
                 case RequestType.PagedRead:
                 {
-                    return this.ExecuteGetPaged(request, modelInfo);
+                    return await this.ExecuteGetPaged(request, modelInfo);
                 }
 
                 case RequestType.Create:
                 {
-                    return this.ExecuteInsert(request, modelInfo);
+                    return await this.ExecuteInsert(request, modelInfo);
                 }
 
                 case RequestType.BulkCreate:
                 {
-                    return this.ExecuteInserts(request, modelInfo);
+                    return await this.ExecuteInserts(request, modelInfo);
                 }
 
                 case RequestType.Update:
                 {
-                    return this.ExecuteUpdate(request, modelInfo);
+                    return await this.ExecuteUpdate(request, modelInfo);
                 }
 
                 case RequestType.BulkUpdate:
                 {
-                    return this.ExecuteUpdates(request, modelInfo);
+                    return await this.ExecuteUpdates(request, modelInfo);
                 }
 
                 case RequestType.Delete:
                 {
-                    return this.ExecuteDelete(request, modelInfo);
+                    return await this.ExecuteDelete(request, modelInfo);
                 }
 
                 case RequestType.LinkedReadById:
                 {
-                    return this.ExecuteLinkedGetById(request, modelInfo);
+                    return await this.ExecuteLinkedGetById(request, modelInfo);
                 }
 
                 case RequestType.LinkedBulkRead:
                 {
-                    return this.ExecuteLinkedGetAll(request, modelInfo);
+                    return await this.ExecuteLinkedGetAll(request, modelInfo);
                 }
             }
 

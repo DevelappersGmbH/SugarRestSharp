@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using RestSharp.Portable;
+
 namespace SugarRestSharp
 {
-    using RestSharp;
-
     /// <summary>
     /// Represents SugarApiRestResponse class.
     /// </summary>

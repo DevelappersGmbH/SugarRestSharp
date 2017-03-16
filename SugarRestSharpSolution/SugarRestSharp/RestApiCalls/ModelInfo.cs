@@ -49,7 +49,7 @@ namespace SugarRestSharp
 
             if (type != null)
             {
-                object[] classAttrs = type.GetCustomAttributes(typeof(ModulePropertyAttribute), false);
+                object[] classAttrs = type.GetTypeInfo().GetCustomAttributes(typeof(ModulePropertyAttribute), false).ToArray();
                 if (classAttrs.Length == 1)
                 {
                     string modelName = ((ModulePropertyAttribute)classAttrs[0]).ModuleName;
@@ -59,10 +59,10 @@ namespace SugarRestSharp
                     modelInfo.Type = type;
                     modelInfo.ModelProperties = new List<ModelProperty>();
 
-                    var props = type.GetProperties();
+                    var props = type.GetTypeInfo().DeclaredProperties;
                     foreach (PropertyInfo prop in props)
                     {
-                        object[] propAttrs = prop.GetCustomAttributes(true);
+                        object[] propAttrs = prop.CustomAttributes.ToArray();
                         foreach (object attr in propAttrs)
                         {
                             var modelProperty = new ModelProperty();
@@ -87,54 +87,54 @@ namespace SugarRestSharp
         /// </summary>
         /// <param name="modelName">The module model name.</param>
         /// <returns>The model info object.</returns>
-        public static ModelInfo ReadByName(string modelName)
-        {
-            var modelInfo = new ModelInfo();
+        //public static ModelInfo ReadByName(string modelName)
+        //{
+        //    var modelInfo = new ModelInfo();
 
-            var types = from type in typeof(ModulePropertyAttribute).Assembly.GetTypes()
-                        where Attribute.IsDefined(type, typeof(ModulePropertyAttribute))
-                        select type;
+        //    var types = from type in typeof(ModulePropertyAttribute).GetTypeInfo().Assembly.DefinedTypes
+        //                where type.GetCustomAttributes().Contains(a => a == typeof(ModulePropertyAttribute)) )
+        //                select type;
 
-            foreach (var type in types)
-            {
-                object[] classAttrs = type.GetCustomAttributes(typeof(ModulePropertyAttribute), false);
-                if (classAttrs.Length == 1)
-                {
-                    string attrModelName = ((ModulePropertyAttribute)classAttrs[0]).ModuleName;
-                    string attrJsonModelName = ((ModulePropertyAttribute)classAttrs[0]).TableName;
+        //    foreach (var type in types)
+        //    {
+        //        object[] classAttrs = type.GetCustomAttributes(typeof(ModulePropertyAttribute), false);
+        //        if (classAttrs.Length == 1)
+        //        {
+        //            string attrModelName = ((ModulePropertyAttribute)classAttrs[0]).ModuleName;
+        //            string attrJsonModelName = ((ModulePropertyAttribute)classAttrs[0]).TableName;
 
-                    if (!string.IsNullOrEmpty(attrModelName) && (attrModelName.ToLower() == modelName.ToLower()))
-                    {
-                        modelInfo.ModelName = attrModelName;
-                        modelInfo.JsonModelName = attrJsonModelName;
-                        modelInfo.Type = type;
-                        modelInfo.ModelProperties = new List<ModelProperty>();
+        //            if (!string.IsNullOrEmpty(attrModelName) && (attrModelName.ToLower() == modelName.ToLower()))
+        //            {
+        //                modelInfo.ModelName = attrModelName;
+        //                modelInfo.JsonModelName = attrJsonModelName;
+        //                modelInfo.Type = type;
+        //                modelInfo.ModelProperties = new List<ModelProperty>();
 
-                        var props = type.GetProperties();
-                        foreach (PropertyInfo prop in props)
-                        {
-                            object[] propAttrs = prop.GetCustomAttributes(true);
-                            foreach (object attr in propAttrs)
-                            {
-                                var modelProperty = new ModelProperty();
-                                var jsonProperty = attr as JsonPropertyAttribute;
-                                if (jsonProperty != null)
-                                {
-                                    modelProperty.Name = prop.Name;
-                                    modelProperty.Type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                                    modelProperty.JsonName = jsonProperty.PropertyName;
-                                    modelInfo.ModelProperties.Add(modelProperty);
-                                }
-                            }
-                        }
+        //                var props = type.GetProperties();
+        //                foreach (PropertyInfo prop in props)
+        //                {
+        //                    object[] propAttrs = prop.GetCustomAttributes(true);
+        //                    foreach (object attr in propAttrs)
+        //                    {
+        //                        var modelProperty = new ModelProperty();
+        //                        var jsonProperty = attr as JsonPropertyAttribute;
+        //                        if (jsonProperty != null)
+        //                        {
+        //                            modelProperty.Name = prop.Name;
+        //                            modelProperty.Type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+        //                            modelProperty.JsonName = jsonProperty.PropertyName;
+        //                            modelInfo.ModelProperties.Add(modelProperty);
+        //                        }
+        //                    }
+        //                }
 
-                        return modelInfo;
-                    }
-                }
-            }
+        //                return modelInfo;
+        //            }
+        //        }
+        //    }
 
-            return modelInfo;
-        }
+        //    return modelInfo;
+        //}
 
     }
 }

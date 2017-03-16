@@ -4,6 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System;
@@ -30,7 +34,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="currentPage">The current page number</param>
         /// <param name="numberPerPage">The number of pages per page</param>
         /// <returns>CreateEntryResponse object</returns>
-        public static ReadEntryListResponse Run(string sessionId, string url, string moduleName, List<string> selectFields, string queryString, int currentPage, int numberPerPage)
+        public static async Task<ReadEntryListResponse> Run(string sessionId, string url, string moduleName, List<string> selectFields, string queryString, int currentPage, int numberPerPage)
         {
             var readEntryPagedResponse = new ReadEntryListResponse();
             var content = string.Empty;
@@ -60,7 +64,7 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("response_type", "json");
                 request.AddParameter("rest_data", jsonData);
 
-                var sugarApiRestResponse = client.ExecuteEx(request);
+                var sugarApiRestResponse = await client.ExecuteEx(request);
                 var response = sugarApiRestResponse.RestResponse;
 
                 if (response.StatusCode == HttpStatusCode.OK)

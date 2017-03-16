@@ -86,7 +86,7 @@ namespace SugarRestSharp.Helpers
                 }
                 else
                 {
-                    linkedModelInfo = ModelInfo.ReadByName(item.Key.ToString());
+                    throw new NotSupportedException("Resolve model by name is not supported.");
                 }
 
                 linkedInfo[linkedModelInfo.JsonModelName] = linkedModelInfo.GetJsonPropertyNames(item.Value, true);
@@ -206,8 +206,7 @@ namespace SugarRestSharp.Helpers
             }
 
             return obj is IList &&
-                   obj.GetType().IsGenericType &&
-                   obj.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>));
+                   obj.GetType().IsConstructedGenericType;
         }
     }
 }

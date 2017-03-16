@@ -4,6 +4,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+
 namespace SugarRestSharp
 {
     using System;
@@ -22,14 +25,14 @@ namespace SugarRestSharp
         /// <param name="client">SugarRestClient object</param>
         /// <param name="request">The request object</param>
         /// <returns>SugarRestResponse object</returns>
-        public static SugarApiRestResponse ExecuteEx(this IRestClient client, IRestRequest request)
+        public static async Task<SugarApiRestResponse> ExecuteEx(this IRestClient client, IRestRequest request)
         {
             var sugarApiRestResponse = new SugarApiRestResponse();
             IRestResponse response = null;
  
             try
             {
-                response = client.Execute(request);
+                response = await client.Execute(request);
                 sugarApiRestResponse.RestResponse = response;
             }
             catch (Exception)
@@ -80,7 +83,7 @@ namespace SugarRestSharp
 
                 // The Uri that actually responded (could be different from the requestUri if a redirection occurred)
                 responseUri = response.ResponseUri,
-                errorMessage = response.ErrorMessage,
+                errorMessage = response.StatusDescription,
             };
 
             string jsonRawRequest = JsonConvert.SerializeObject(requestJson);

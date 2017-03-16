@@ -4,6 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Threading.Tasks;
+using RestSharp.Portable;
+using RestSharp.Portable.HttpClient;
+using SugarRestSharp.Models;
+
 namespace SugarRestSharp.MethodCalls
 {
     using System;
@@ -28,7 +33,7 @@ namespace SugarRestSharp.MethodCalls
         /// <param name="moduleName">SugarCrm module name</param>
         /// <param name="id">The entity identifier</param>
         /// <returns>DeleteEntryResponse object</returns>
-        public static DeleteEntryResponse Run(string sessionId, string url, string moduleName, string id)
+        public static async Task<DeleteEntryResponse> Run(string sessionId, string url, string moduleName, string id)
         {
             var deleteEntryResponse = new DeleteEntryResponse();
             var content = string.Empty;
@@ -51,7 +56,7 @@ namespace SugarRestSharp.MethodCalls
                 request.AddParameter("response_type", "json");
                 request.AddParameter("rest_data", jsonData);
 
-                var sugarApiRestResponse = client.ExecuteEx(request);
+                var sugarApiRestResponse = await client.ExecuteEx(request);
                 var response = sugarApiRestResponse.RestResponse;
 
                 if (response.StatusCode == HttpStatusCode.OK)

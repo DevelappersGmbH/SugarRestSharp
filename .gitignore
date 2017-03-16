@@ -1,0 +1,4 @@
+SugarRestSharpSolution/packages/
+bin/
+obj/
+*.suo
