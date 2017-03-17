@@ -13,24 +13,24 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
     internal static class ContactsModule
     {
-        public static SugarRestResponse CreateContact(SugarRestClient client, Contact contact)
+        public static async Task<SugarRestResponse> CreateContact(SugarRestClient client, Contact contact)
         {
             var request = new SugarRestRequest("Contacts", RequestType.Create);
             request.Parameter = contact;
 
             request.Options.SelectFields = GetSelectedField();
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
-        public static SugarRestResponse CreateContactByType(SugarRestClient client, Contact contact)
+        public static async Task<SugarRestResponse> CreateContactByType(SugarRestClient client, Contact contact)
         {
             var request = new SugarRestRequest(RequestType.Create);
             request.Parameter = contact;
 
             request.Options.SelectFields = GetSelectedField();
 
-            return client.Execute<Contact>(request);
+            return await client.Execute<Contact>(request);
         }
 
         public static async Task<SugarRestResponse> CreateContactAsync(SugarRestClient client, Contact contact)
@@ -44,17 +44,17 @@ namespace SugarRestSharp.IntegrationTests.Helpers
         }
 
 
-        public static SugarRestResponse BulkCreateContact(SugarRestClient client, List<Contact> contacts)
+        public static async Task<SugarRestResponse> BulkCreateContact(SugarRestClient client, List<Contact> contacts)
         {
             var request = new SugarRestRequest("Contacts", RequestType.BulkCreate);
             request.Parameter = contacts;
 
             request.Options.SelectFields = GetSelectedField();
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
-        public static SugarRestResponse ReadContact(SugarRestClient client, string contactId)
+        public static async Task<SugarRestResponse> ReadContact(SugarRestClient client, string contactId)
         {
             var request = new SugarRestRequest("Contacts", RequestType.ReadById);
             request.Parameter = contactId;
@@ -62,10 +62,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = GetSelectedField();
             request.Options.SelectFields.Add(nameof(Contact.Id));
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
-        public static SugarRestResponse ReadContactByType(SugarRestClient client, string contactId)
+        public static async Task<SugarRestResponse> ReadContactByType(SugarRestClient client, string contactId)
         {
             var request = new SugarRestRequest(RequestType.ReadById);
             request.Parameter = contactId;
@@ -73,7 +73,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = GetSelectedField();
             request.Options.SelectFields.Add(nameof(Contact.Id));
 
-            return client.Execute<Contact>(request);
+            return await client.Execute<Contact>(request);
         }
 
         public static async Task<SugarRestResponse> ReadContactAsync(SugarRestClient client, string contactId)
@@ -87,7 +87,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             return await client.ExecuteAsync<Contact>(request);
         }
 
-        public static SugarRestResponse BulkReadContact(SugarRestClient client, int count)
+        public static async Task<SugarRestResponse> BulkReadContact(SugarRestClient client, int count)
         {
             var request = new SugarRestRequest("Contacts", RequestType.BulkRead);
 
@@ -96,7 +96,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.MaxResult = count;
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
         public static async Task<SugarRestResponse> BulkReadContactAsync(SugarRestClient client, int count)
@@ -112,7 +112,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             return await client.ExecuteAsync<Contact>(request);
         }
 
-        public static List<Contact> BulkReadContact2(SugarRestClient client, List<string> contactIds)
+        public static async Task<List<Contact>> BulkReadContact2(SugarRestClient client, List<string> contactIds)
         {
             var request = new SugarRestRequest("Contacts", RequestType.ReadById);
 
@@ -124,7 +124,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             foreach (var id in contactIds)
             {
                 request.Parameter = id;
-                SugarRestResponse response = client.Execute(request);
+                SugarRestResponse response = await client.Execute<Contact>(request);
 
                 contacts.Add((Contact) response.Data);
             }
@@ -132,7 +132,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             return contacts;
         }
 
-        public static SugarRestResponse UpdateContact(SugarRestClient client, string identifier)
+        public static async Task<SugarRestResponse> UpdateContact(SugarRestClient client, string identifier)
         {
             Random random = new Random();
             int uniqueNumber = 10000 + random.Next(100, 999);
@@ -147,10 +147,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = new List<string>();
             request.Options.SelectFields.Add(nameof(Contact.Title));
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
-        public static SugarRestResponse BulkUpdateContact(SugarRestClient client, List<Contact> contacts)
+        public static async Task<SugarRestResponse> BulkUpdateContact(SugarRestClient client, List<Contact> contacts)
         {
             Random random = new Random();
             foreach (var contact in contacts)
@@ -164,23 +164,23 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = new List<string>();
             request.Options.SelectFields.Add(nameof(Contact.PrimaryAddressPostalcode));
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
-        public static SugarRestResponse DeleteContact(SugarRestClient client, string contactId)
+        public static async Task<SugarRestResponse> DeleteContact(SugarRestClient client, string contactId)
         {
             var request = new SugarRestRequest("Contacts", RequestType.Delete);
             request.Parameter = contactId;
 
-            return client.Execute(request);
+            return await client.Execute<Contact>(request);
         }
 
-        public static SugarRestResponse DeleteContactByType(SugarRestClient client, string contactId)
+        public static async Task<SugarRestResponse> DeleteContactByType(SugarRestClient client, string contactId)
         {
             var request = new SugarRestRequest(RequestType.Delete);
             request.Parameter = contactId;
 
-            return client.Execute<Contact>(request);
+            return await client.Execute<Contact>(request);
         }
 
         public static async Task<SugarRestResponse> DeleteContactAsync(SugarRestClient client, string contactId)
@@ -188,10 +188,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             var request = new SugarRestRequest("Contacts", RequestType.Delete);
             request.Parameter = contactId;
 
-            return await client.ExecuteAsync(request);
+            return await client.ExecuteAsync<Contact>(request);
         }
 
-        public static List<string> BulkDeleteContact(SugarRestClient client, List<string> contactIds)
+        public static async Task<List<string>> BulkDeleteContact(SugarRestClient client, List<string> contactIds)
         {
             var request = new SugarRestRequest("Contacts", RequestType.Delete);
 
@@ -199,7 +199,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             foreach (var id in contactIds)
             {
                 request.Parameter = id;
-                SugarRestResponse response = client.Execute(request);
+                SugarRestResponse response = await client.Execute<Contact>(request);
                 string identifier = (response.Data == null) ? string.Empty : response.Data.ToString();
                 listId.Add(identifier);
             }

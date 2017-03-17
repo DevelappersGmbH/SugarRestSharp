@@ -16,7 +16,7 @@ namespace SugarRestSharp.IntegrationTests
     public class QueryTests
     {
         [Fact]
-        public void ReadBulkWithQuery1Test()
+        public async void ReadBulkWithQuery1Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
@@ -30,7 +30,7 @@ namespace SugarRestSharp.IntegrationTests
             request.Options.QueryPredicates.Add(new QueryPredicate(nameof(Account.Name), QueryOperator.Equal, "General Electric USA, Inc"));
             request.Options.MaxResult = count;
 
-            SugarRestResponse response = client.Execute(request);
+            SugarRestResponse response = await client.Execute<Account>(request);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -42,7 +42,7 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void ReadBulkWithPredicateTest()
+        public async void ReadBulkWithPredicateTest()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
@@ -55,7 +55,7 @@ namespace SugarRestSharp.IntegrationTests
             request.Options.QueryPredicates.Add(new QueryPredicate(nameof(Account.Name), QueryOperator.Equal, "Air Safety Inc"));
             request.Options.MaxResult = count;
 
-            SugarRestResponse response = client.Execute(request);
+            SugarRestResponse response = await client.Execute<Account>(request);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -67,7 +67,7 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void ReadBulkWithQuery2Test()
+        public async void ReadBulkWithQuery2Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
@@ -77,7 +77,7 @@ namespace SugarRestSharp.IntegrationTests
             request.Options.QueryPredicates = new List<QueryPredicate>();
             request.Options.MaxResult = count;
 
-            SugarRestResponse response = client.Execute<Lead>(request);
+            SugarRestResponse response = await client.Execute<Lead>(request);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -93,7 +93,7 @@ namespace SugarRestSharp.IntegrationTests
             request.Options.QueryPredicates.Add(new QueryPredicate(nameof(Lead.LastName), QueryOperator.Equal, "Johnson"));
             request.Options.MaxResult = count;
 
-            response = client.Execute<Lead>(request);
+            response = await client.Execute<Lead>(request);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -111,7 +111,7 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void ReadBulkWithPredicate2Test()
+        public async void ReadBulkWithPredicate2Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
@@ -121,7 +121,7 @@ namespace SugarRestSharp.IntegrationTests
             request.Options.QueryPredicates = new List<QueryPredicate>();
             request.Options.MaxResult = count;
 
-            SugarRestResponse response = client.Execute<Lead>(request);
+            SugarRestResponse response = await client.Execute<Lead>(request);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -136,7 +136,7 @@ namespace SugarRestSharp.IntegrationTests
             request.Options.QueryPredicates.Add(new QueryPredicate(nameof(Lead.Id), QueryOperator.WhereIn, identifiers));
             request.Options.MaxResult = count;
 
-            response = client.Execute<Lead>(request);
+            response = await client.Execute<Lead>(request);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);

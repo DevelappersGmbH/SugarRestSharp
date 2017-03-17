@@ -13,24 +13,24 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
     internal static class AccountsModule
     {
-        public static SugarRestResponse CreateAccount(SugarRestClient client, Account account)
+        public static async Task<SugarRestResponse> CreateAccount(SugarRestClient client, Account account)
         {
             var request = new SugarRestRequest("Accounts", RequestType.Create);
             request.Parameter = account;
 
             request.Options.SelectFields = GetSelectedField();
 
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse CreateAccountByType(SugarRestClient client, Account account)
+        public static async Task<SugarRestResponse> CreateAccountByType(SugarRestClient client, Account account)
         {
             var request = new SugarRestRequest(RequestType.Create);
             request.Parameter = account;
 
             request.Options.SelectFields = GetSelectedField();
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
         public static async Task<SugarRestResponse> CreateAccountAsync(SugarRestClient client, Account account)
@@ -44,15 +44,15 @@ namespace SugarRestSharp.IntegrationTests.Helpers
         }
 
 
-        public static SugarRestResponse BulkCreateAccount(SugarRestClient client, List<Account> accounts)
+        public static async Task<SugarRestResponse> BulkCreateAccount(SugarRestClient client, List<Account> accounts)
         {
             var request = new SugarRestRequest("Accounts", RequestType.BulkCreate);
             request.Parameter = accounts;
             request.Options.SelectFields = GetSelectedField();
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse ReadAccount(SugarRestClient client, string accountId)
+        public static async Task<SugarRestResponse> ReadAccount(SugarRestClient client, string accountId)
         {
             var request = new SugarRestRequest("Accounts", RequestType.ReadById);
             request.Parameter = accountId;
@@ -60,10 +60,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = GetSelectedField();
             request.Options.SelectFields.Add(nameof(Account.Id));
 
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse ReadAccountByType(SugarRestClient client, string accountId)
+        public static async Task<SugarRestResponse> ReadAccountByType(SugarRestClient client, string accountId)
         {
             var request = new SugarRestRequest(RequestType.ReadById);
             request.Parameter = accountId;
@@ -71,7 +71,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = GetSelectedField();
             request.Options.SelectFields.Add(nameof(Account.Id));
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
         public static async Task<SugarRestResponse> ReadAccountAsync(SugarRestClient client, string accountId)
@@ -85,7 +85,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             return await client.ExecuteAsync<Account>(request);
         }
 
-        public static SugarRestResponse BulkReadAccount(SugarRestClient client, int count)
+        public static async Task<SugarRestResponse> BulkReadAccount(SugarRestClient client, int count)
         {
             var request = new SugarRestRequest("Accounts", RequestType.BulkRead);
 
@@ -94,7 +94,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.MaxResult = count;
 
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
         public static async Task<SugarRestResponse> BulkReadAccountAsync(SugarRestClient client, int count)
@@ -110,7 +110,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             return await client.ExecuteAsync<Account>(request);
         }
 
-        public static List<Account> BulkReadAccount2(SugarRestClient client, List<string> accountIds)
+        public static async Task<List<Account>> BulkReadAccount2(SugarRestClient client, List<string> accountIds)
         {
             var request = new SugarRestRequest("Accounts", RequestType.ReadById);
 
@@ -122,7 +122,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             foreach (var id in accountIds)
             {
                 request.Parameter = id;
-                SugarRestResponse response = client.Execute(request);
+                SugarRestResponse response = await client.Execute<Account>(request);
 
                 accounts.Add((Account)response.Data);
             }
@@ -130,7 +130,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             return accounts;
         }
 
-        public static SugarRestResponse UpdateAccount(SugarRestClient client, string identifier)
+        public static async Task<SugarRestResponse> UpdateAccount(SugarRestClient client, string identifier)
         {
             Random random = new Random();
             int uniqueNumber = 10000 + random.Next(100, 999);
@@ -145,10 +145,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = new List<string>();
             request.Options.SelectFields.Add(nameof(Account.Name));
 
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse BulkUpdateAccount(SugarRestClient client, List<Account> accounts)
+        public static async Task<SugarRestResponse> BulkUpdateAccount(SugarRestClient client, List<Account> accounts)
         {
             foreach (var account in accounts)
             {
@@ -161,23 +161,23 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             request.Options.SelectFields = new List<string>();
             request.Options.SelectFields.Add(nameof(Account.Name));
 
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse DeleteAccount(SugarRestClient client, string accountId)
+        public static async Task<SugarRestResponse> DeleteAccount(SugarRestClient client, string accountId)
         {
             var request = new SugarRestRequest("Accounts", RequestType.Delete);
             request.Parameter = accountId;
 
-            return client.Execute(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse DeleteAccountByType(SugarRestClient client, string accountId)
+        public static async Task<SugarRestResponse> DeleteAccountByType(SugarRestClient client, string accountId)
         {
             var request = new SugarRestRequest(RequestType.Delete);
             request.Parameter = accountId;
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
         public static async Task<SugarRestResponse> DeleteAccountAsync(SugarRestClient client, string accountId)
@@ -185,10 +185,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             var request = new SugarRestRequest("Accounts", RequestType.Delete);
             request.Parameter = accountId;
 
-            return await client.ExecuteAsync(request);
+            return await client.ExecuteAsync<Account>(request);
         }
 
-        public static List<string> BulkDeleteAccount(SugarRestClient client, List<string> accountIds)
+        public static async Task<List<string>> BulkDeleteAccount(SugarRestClient client, List<string> accountIds)
         {
             var request = new SugarRestRequest("Accounts", RequestType.Delete);
 
@@ -196,7 +196,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
             foreach (var id in accountIds)
             {
                 request.Parameter = id;
-                SugarRestResponse response = client.Execute(request);
+                SugarRestResponse response = await client.Execute<Account>(request);
                 string identifier = (response.Data == null) ? string.Empty : response.Data.ToString();
                 listId.Add(identifier);
             }

@@ -8,10 +8,11 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 {
     using Models;
     using System.Collections.Generic;
-  
+    using System.Threading.Tasks;
+
     internal static class LinkedModules
     {
-        public static SugarRestResponse ReadAccountLinkContact(SugarRestClient client, string accountId)
+        public static async Task<SugarRestResponse> ReadAccountLinkContact(SugarRestClient client, string accountId)
         {
             var request = new SugarRestRequest(RequestType.LinkedReadById);
             request.Parameter = accountId;
@@ -39,10 +40,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.LinkedModules = linkedListInfo;
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse ReadAccountLinkItems(SugarRestClient client, string accountId)
+        public static async Task<SugarRestResponse> ReadAccountLinkItems(SugarRestClient client, string accountId)
         {
             var request = new SugarRestRequest(RequestType.LinkedReadById);
             request.Parameter = accountId;
@@ -64,10 +65,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.LinkedModules = linkedListInfo;
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse BulkReadAccountLinkContact(SugarRestClient client, int count)
+        public static async Task<SugarRestResponse> BulkReadAccountLinkContact(SugarRestClient client, int count)
         {
             var request = new SugarRestRequest(RequestType.LinkedBulkRead);
             request.Options.MaxResult = count;
@@ -95,10 +96,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.LinkedModules = linkedListInfo;
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse BulkReadAccountLinkItems(SugarRestClient client, int count)
+        public static async Task<SugarRestResponse> BulkReadAccountLinkItems(SugarRestClient client, int count)
         {
             var request = new SugarRestRequest(RequestType.LinkedBulkRead);
             request.Options.MaxResult = count;
@@ -120,10 +121,10 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.LinkedModules = linkedListInfo;
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
 
-        public static SugarRestResponse BulkReadAccountLinkItems2(SugarRestClient client, int count)
+        public static async Task<SugarRestResponse> BulkReadAccountLinkItems2(SugarRestClient client, int count)
         {
             var request = new SugarRestRequest(RequestType.LinkedBulkRead);
             request.Options.MaxResult = count;
@@ -153,7 +154,7 @@ namespace SugarRestSharp.IntegrationTests.Helpers
 
             request.Options.LinkedModules = linkedListInfo;
 
-            return client.Execute<Account>(request);
+            return await client.Execute<Account>(request);
         }
     }
 }

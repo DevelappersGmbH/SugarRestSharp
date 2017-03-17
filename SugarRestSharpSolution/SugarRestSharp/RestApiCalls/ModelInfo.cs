@@ -66,12 +66,13 @@ namespace SugarRestSharp
                         foreach (object attr in propAttrs)
                         {
                             var modelProperty = new ModelProperty();
+                            var customAttr = attr as CustomAttributeData;
                             var jsonProperty = attr as JsonPropertyAttribute;
-                            if (jsonProperty != null)
+                            if (customAttr.AttributeType == typeof(JsonPropertyAttribute))
                             {
                                 modelProperty.Name = prop.Name;
                                 modelProperty.Type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                                modelProperty.JsonName = jsonProperty.PropertyName;
+                                modelProperty.JsonName = customAttr.NamedArguments.FirstOrDefault(a => a.MemberName == "PropertyName").TypedValue.Value.ToString();
                                 modelInfo.ModelProperties.Add(modelProperty);
                             }
                         }

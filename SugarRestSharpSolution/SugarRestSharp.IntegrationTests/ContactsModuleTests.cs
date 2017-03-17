@@ -18,14 +18,14 @@ namespace SugarRestSharp.IntegrationTests
     public class ContactsModuleTests
     {
         [Fact]
-        public void CRUDTest()
+        public async void CRUDTest()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             Contact insertContact = ContactsModule.GetTestContact();
 
             // -------------------Create Contact-------------------
-            SugarRestResponse response = ContactsModule.CreateContact(client, insertContact);
+            SugarRestResponse response = await ContactsModule.CreateContact(client, insertContact);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -38,7 +38,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Read Contact-------------------
-            response = ContactsModule.ReadContact(client, insertId);
+            response = await ContactsModule.ReadContact(client, insertId);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -54,7 +54,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Update Contact-------------------
-            response = ContactsModule.UpdateContact(client, readOnCreateContact.Id);
+            response = await ContactsModule.UpdateContact(client, readOnCreateContact.Id);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -67,7 +67,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Read Contact-------------------
-            response = ContactsModule.ReadContact(client, updateId);
+            response = await ContactsModule.ReadContact(client, updateId);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -82,7 +82,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Delete Contact-------------------
-            response = ContactsModule.DeleteContact(client, updateId);
+            response = await ContactsModule.DeleteContact(client, updateId);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -96,13 +96,13 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void BulkCRUDTest()
+        public async void BulkCRUDTest()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
             List<Contact> insertContacts = ContactsModule.GetTestBulkContact();
 
             // -------------------Create Bulk Contact-------------------
-            SugarRestResponse response = ContactsModule.BulkCreateContact(client, insertContacts);
+            SugarRestResponse response = await ContactsModule.BulkCreateContact(client, insertContacts);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -121,7 +121,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Bulk Read Contact-------------------
-            List<Contact> readOnCreateContacts = ContactsModule.BulkReadContact2(client, insertIds);
+            List<Contact> readOnCreateContacts = await ContactsModule.BulkReadContact2(client, insertIds);
 
             Assert.NotNull(readOnCreateContacts);
             Assert.Equal(insertIds.Count, readOnCreateContacts.Count);
@@ -144,7 +144,7 @@ namespace SugarRestSharp.IntegrationTests
                 contactNameDic[contact.Id] = contact.PrimaryAddressPostalcode;
             }
 
-            response = ContactsModule.BulkUpdateContact(client, readOnCreateContacts);
+            response = await ContactsModule.BulkUpdateContact(client, readOnCreateContacts);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -161,7 +161,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Bulk Read Contact-------------------
-            List<Contact> readOnUpdateContacts = ContactsModule.BulkReadContact2(client, updateIds);
+            List<Contact> readOnUpdateContacts = await ContactsModule.BulkReadContact2(client, updateIds);
 
             Assert.NotNull(readOnUpdateContacts);
             Assert.Equal(updateIds.Count, readOnUpdateContacts.Count);
@@ -176,7 +176,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Bulk Delete Contact-------------------
-            List<string> deleteIds = ContactsModule.BulkDeleteContact(client, updateIds);
+            List<string> deleteIds = await ContactsModule.BulkDeleteContact(client, updateIds);
 
             Assert.NotNull(deleteIds);
             Assert.Equal(updateIds.Count, deleteIds.Count);
@@ -191,14 +191,14 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void ReadByTypeTest()
+        public async void ReadByTypeTest()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             Contact insertContact = ContactsModule.GetTestContact();
 
             // -------------------Create Contact-------------------
-            SugarRestResponse response = ContactsModule.CreateContactByType(client, insertContact);
+            SugarRestResponse response = await ContactsModule.CreateContactByType(client, insertContact);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -211,7 +211,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Read Contact-------------------
-            response = ContactsModule.ReadContactByType(client, insertId);
+            response = await ContactsModule.ReadContactByType(client, insertId);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -227,7 +227,7 @@ namespace SugarRestSharp.IntegrationTests
 
 
             // -------------------Delete Contact-------------------
-            response = ContactsModule.DeleteContactByType(client, readOnCreateContact.Id);
+            response = await ContactsModule.DeleteContactByType(client, readOnCreateContact.Id);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -291,13 +291,13 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void ReadBulkTest()
+        public async void ReadBulkTest()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             // -------------------Bulk Read Contact-------------------
             int count = 10;
-            SugarRestResponse response = ContactsModule.BulkReadContact(client, count);
+            SugarRestResponse response = await ContactsModule.BulkReadContact(client, count);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);

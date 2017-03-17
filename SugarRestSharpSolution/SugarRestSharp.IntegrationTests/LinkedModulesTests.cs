@@ -17,13 +17,13 @@ namespace SugarRestSharp.IntegrationTests
     public class LinkedModulesTests
     {
         [Fact]
-        public void LinkedRead1Test()
+        public async void LinkedRead1Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             // -------------------Bulk Read Account-------------------
             int count = 10;
-            SugarRestResponse response = AccountsModule.BulkReadAccount(client, count);
+            SugarRestResponse response = await AccountsModule.BulkReadAccount(client, count);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -36,7 +36,7 @@ namespace SugarRestSharp.IntegrationTests
 
             // -------------------Read Account Link Contact-------------------
             string accountId = readAccounts[count - 1].Id;
-            response = LinkedModules.ReadAccountLinkContact(client, accountId);
+            response = await LinkedModules.ReadAccountLinkContact(client, accountId);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -55,13 +55,13 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void LinkedRead2Test()
+        public async void LinkedRead2Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             // -------------------Bulk Read Account-------------------
             int count = 10;
-            SugarRestResponse response = AccountsModule.BulkReadAccount(client, count);
+            SugarRestResponse response = await AccountsModule.BulkReadAccount(client, count);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -74,7 +74,7 @@ namespace SugarRestSharp.IntegrationTests
 
             // -------------------Read Account Link Concat-------------------
             string accountId = readAccounts[count - 1].Id;
-            response = LinkedModules.ReadAccountLinkItems(client, accountId);
+            response = await LinkedModules.ReadAccountLinkItems(client, accountId);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -93,13 +93,13 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void BulkLinkedRead1Test()
+        public async void BulkLinkedRead1Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             // -------------------Read Account Link Contact-------------------
             int count = 10;
-            SugarRestResponse response = LinkedModules.BulkReadAccountLinkContact(client, count);
+            SugarRestResponse response = await LinkedModules.BulkReadAccountLinkContact(client, count);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -114,13 +114,13 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void BulkLinkedRead2Test()
+        public async void BulkLinkedRead2Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             // -------------------Read Account Link Contact-------------------
             int count = 10;
-            SugarRestResponse response = LinkedModules.BulkReadAccountLinkItems(client, count);
+            SugarRestResponse response = await LinkedModules.BulkReadAccountLinkItems(client, count);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
@@ -135,13 +135,13 @@ namespace SugarRestSharp.IntegrationTests
         }
 
         [Fact]
-        public void BulkLinkedRead3Test()
+        public async void BulkLinkedRead3Test()
         {
             var client = new SugarRestClient(TestAccount.Url, TestAccount.Username, TestAccount.Password);
 
             // -------------------Read Account Link Contact-------------------
             int count = 10;
-            SugarRestResponse response = LinkedModules.BulkReadAccountLinkItems2(client, count);
+            SugarRestResponse response = await LinkedModules.BulkReadAccountLinkItems2(client, count);
 
             Assert.NotNull(response);
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
