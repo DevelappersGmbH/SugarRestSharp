@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SugarCrm.PocoGen", "SugarCrm.PocoGen\SugarCrm.PocoGen.csproj", "{092CDD54-CDCC-4BD3-B395-195848DA10F0}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SugarRestSharp", "SugarRestSharp\SugarRestSharp.csproj", "{F0F513B8-998D-435E-92F0-42CA484D98AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SugarRestSharp.IntegrationTests", "SugarRestSharp.IntegrationTests\SugarRestSharp.IntegrationTests.csproj", "{B35BA57C-DC77-44AE-B145-F6DCB4B4CED1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SugarRestSharp.Lib", "SugarRestSharp.Lib\SugarRestSharp.Lib.csproj", "{0341D869-FD3E-4CE9-87E8-1ACA13079D0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{B35BA57C-DC77-44AE-B145-F6DCB4B4CED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B35BA57C-DC77-44AE-B145-F6DCB4B4CED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B35BA57C-DC77-44AE-B145-F6DCB4B4CED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0341D869-FD3E-4CE9-87E8-1ACA13079D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0341D869-FD3E-4CE9-87E8-1ACA13079D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0341D869-FD3E-4CE9-87E8-1ACA13079D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0341D869-FD3E-4CE9-87E8-1ACA13079D0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF2EBE48-CADC-4711-B4F8-69455AC4EB5B}
 	EndGlobalSection
 EndGlobal

@@ -12,7 +12,7 @@ namespace SugarRestSharp.IntegrationTests
         {
             get
             {
-                return @"http://191.101.224.189/sugar/service/v4_1/rest.php";
+                return @"http://13.94.249.22/service/v4_1/rest.php";
             }
         }
 
